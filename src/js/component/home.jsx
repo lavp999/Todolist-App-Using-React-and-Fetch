@@ -1,6 +1,8 @@
-import React, {useState } from "react";
+import React, {useState, useEffect } from "react";
 import ElementoLista from "./elementoLista.jsx";
 import Total from "./total.jsx";
+
+const servidor = 'http://assets.breatheco.de/apis/fake/todos/user/lavp999';
 
 //create your first component
 const Home = () => {
@@ -13,10 +15,60 @@ const Home = () => {
 
 	function sumaToDo(evento){
 		if (evento.keyCode == 13 && evento.target.value != "") {
-			setLista([...lista, evento.target.value]);
-			setInputValue("");
+			setLista([...lista, {"label": evento.target.value, "done" :false}]);
+			setInputValue('');
+
+			fetch(servidor, {
+				method: "PUT",
+				body: JSON.stringify(lista),
+				headers: {
+				  "Content-Type": "application/json"
+				}
+			  })
+			  .then(resp => {
+				  console.log(resp.ok);     // Será true (verdad) si la respuesta es exitosa.
+				  console.log(resp.status); // el código de estado = 200 o código = 400 etc.
+				  console.log("Texto:", resp.text()); // Intentará devolver el resultado exacto como cadena (string)
+				  console.log("res ", resp.json()); //esto imprimirá en la consola el objeto exacto recibido del servidor
+				  return resp.json();       // (regresa una promesa) will try to parse the result as json as return a promise that you can .then for results
+			  })
+			  .then(data => {
+				  //Aquí es donde debe comenzar tu código después de que finalice la búsqueda
+				  console.log("data", data); //esto imprimirá en la consola el objeto exacto recibido del servidor
+			  })
+			  .catch(error => {
+				  //manejo de errores
+				  console.log("Mi Error",error);
+			  });
+
+
+
 		}
 	}
+
+/* -------------------------------------------------------------------------------------------------  */
+/* Cargo la lista al cargar la aplicación                                                             */
+/* -------------------------------------------------------------------------------------------------  */
+
+	useEffect(()=>{
+		fetch(servidor)
+		.then((resp) =>
+		 {	
+			// console.log("Mi respuesta: ", resp.json());
+			// console.log("Mi estatus: ", resp.status);
+			if (resp.status == 200)
+				 return resp.json(); 
+			//else return new Promise(); hacer el post?
+		})
+		.then((resp) => {
+			resp.forEach(element => {
+				setLista([...lista, {"label": element.label, "done" :false}]);
+			})
+		})
+	}, []);
+
+/* -------------------------------------------------------------------------------------------------  */
+/* -------------------------------------------------------------------------------------------------  */
 
 	return (
 		<div>
@@ -32,6 +84,9 @@ const Home = () => {
 						<ElementoLista lista={lista} setLista={setLista} />
 						<hr />
 						<Total total={lista.length} />
+
+
+
 					</div>
 				</div>
 			</div>
