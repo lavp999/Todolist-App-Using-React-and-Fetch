@@ -10,3 +10,89 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+body{
+    background-color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #999; 
+    height:1px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+.cajaBlanca{
+    width: 450px;
+    height: auto;
+    background-color: rgb(212, 212, 219);
+    margin:0px auto;
+    margin-top: 50px;
+    padding: 0px 20px 10px 20px;
+    border-radius: 10px;
+
+}
+
+.titulo{
+    text-align: center; 
+    font-size: xx-large;
+    color: aliceblue;
+}
+
+.tarjeta{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(254, 255, 255);
+    border-radius: 5px;
+}
+
+.cajaInput{
+    background-color: rgb(231, 237, 237);
+    width: 70%;
+    margin: 5px 15px;
+    padding: 4px 16px;
+    border-radius: 5px;
+    border: 0px;
+}
+
+.divTareas{
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    font-size: 15px;
+    width: 100%;
+    margin: 0px;
+    padding: 4px 16px 4px 16px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(181, 185, 186);
+    border-top: 1px solid rgb(185, 185, 187);
+}
+
+.divTareas p {
+    width : 80%;
+    color: rgb(181, 185, 186);
+    margin: 0px;
+    padding: 0px;
+}
+
+.divTareas button {
+    width : 10%;
+    height : 10%;
+    margin: 0px;
+    padding: 0px;
+    color: rgb(181, 185, 186);
+}
+
+.divTotal{
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    font-size: 12px;
+    max-width: 300px;
+    margin: 0px;
+    padding: 4px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(181, 185, 186);
+}
