@@ -61,9 +61,12 @@ const Home = () => {
 			//else return new Promise(); hacer el post?
 		})
 		.then((resp) => {
+			let miArray = [];
 			resp.forEach(element => {
-				setLista([...lista, {"label": element.label, "done" :false}]);
+				// setLista([...lista, {"label": element.label, "done" :false}]);
+				miArray.push({"label": element.label, "done" :false});
 			})
+			setLista(miArray);
 		})
 	}, []);
 
