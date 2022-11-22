@@ -12,7 +12,14 @@ const Home = () => {
 	function asigna(evento){
 		setInputValue(evento.target.value);
 	}
-
+/**
+ * 
+ * {[
+    { label: "Make the bed", done: false },
+    { label: "Walk the dog", done: false },
+    { label: "Do the replits", done: false }
+  ]}  
+ */
 	function sumaToDo(evento){
 		if (evento.keyCode == 13 && evento.target.value != "") {
 			setLista([...lista, {"label": evento.target.value, "done" :false}]);
@@ -20,7 +27,7 @@ const Home = () => {
 
 			fetch(servidor, {
 				method: "PUT",
-				body: JSON.stringify(lista),
+				body: JSON.stringify([...lista, {"label": evento.target.value, "done" :false}]),
 				headers: {
 				  "Content-Type": "application/json"
 				}
@@ -40,9 +47,6 @@ const Home = () => {
 				  //manejo de errores
 				  console.log("Mi Error",error);
 			  });
-
-
-
 		}
 	}
 
@@ -87,9 +91,6 @@ const Home = () => {
 						<ElementoLista lista={lista} setLista={setLista} />
 						<hr />
 						<Total total={lista.length} />
-
-
-
 					</div>
 				</div>
 			</div>
