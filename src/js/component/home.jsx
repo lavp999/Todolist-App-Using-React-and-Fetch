@@ -43,7 +43,7 @@ function leerLista(){
 			 return resp.json(); 
 	})
 	.then((resp) => {
-		if (!Array.isArray(resp) || (resp.length == 0)){
+		if (!Array.isArray(resp)){
 			setLista([]);
 		}else{
 			let miArray = [];
@@ -53,6 +53,10 @@ function leerLista(){
 			setLista(miArray);
 		}
 	})
+	.catch(error => {
+		console.log("leerLista",error);
+		setLista();
+	});
 }
 
 
@@ -65,15 +69,9 @@ function modificaLista(miLista){
 		  "Content-Type": "application/json"
 		}
 	  })
-	  .then(resp => {
-		  return resp.json();   // (regresa una promesa) will try to parse the result as json as return a promise that you can .then for results
-	  })
-	  .then(data => {
-		  setLista(miLista);    // lo se.... miLista local, setLista global...... pero este lenguaje no invita a muchas cosas, la verdad :-)
-	  })
-	  .catch(error => {
-		  console.log("Mi Error",error);
-	  });
+	  .then(resp => { return resp.json(); })
+	  .then(data => { setLista(miLista);  })
+	  .catch(error => {console.log("Mi Error",error);});
 }
 
 function borraLista(){
@@ -83,15 +81,14 @@ function borraLista(){
 		headers: {"Content-Type": "application/json"}
 		})
 		.then(resp => {
-			return resp.json();       // (regresa una promesa) will try to parse the result as json as return a promise that you can .then for results
+			return resp.json();
 		})
 		.then(data => {
-			//creaLista();	
-			leerLista([]);
+			console.log("borraLista",data);	
+			//leerLista();
+			setLista([]);
 		})
-		.catch(error => {
-			console.log("Mi Error",error);
-		});
+		.catch(error => {console.log("Mi Error",error);});
 }
 	
 /* -------------------------------------------------------------------------------------------------  */
@@ -100,7 +97,8 @@ function borraLista(){
 
 	useEffect(()=>{
 		leerLista();
-		if (!Array.isArray(lista) || (lista.length == 0)){
+		if (!Array.isArray(lista) && (lsita.length > 0)){
+			console.log("Estar por aquí");
 			creaLista();
 			leerLista();
 		}
