@@ -96,3 +96,11 @@ hr {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: rgb(181, 185, 186);
 }
+
+.divTotal button{
+    background: rgb(255, 0, 0);
+    margin: 0px;
+    padding: 4px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(251, 252, 254);
+}
