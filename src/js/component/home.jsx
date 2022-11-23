@@ -12,19 +12,9 @@ const Home = () => {
 	function asigna(evento){
 		setInputValue(evento.target.value);
 	}
-/**
- * 
- * {[
-    { label: "Make the bed", done: false },
-    { label: "Walk the dog", done: false },
-    { label: "Do the replits", done: false }
-  ]}  
- */
+
 	function sumaToDo(evento){
 		if (evento.keyCode == 13 && evento.target.value != "") {
-			setLista([...lista, {"label": evento.target.value, "done" :false}]);
-			setInputValue('');
-
 			fetch(servidor, {
 				method: "PUT",
 				body: JSON.stringify([...lista, {"label": evento.target.value, "done" :false}]),
@@ -35,12 +25,12 @@ const Home = () => {
 			  .then(resp => {
 				  console.log(resp.ok);     // Será true (verdad) si la respuesta es exitosa.
 				  console.log(resp.status); // el código de estado = 200 o código = 400 etc.
-				  console.log("Texto:", resp.text()); // Intentará devolver el resultado exacto como cadena (string)
-				  console.log("res ", resp.json()); //esto imprimirá en la consola el objeto exacto recibido del servidor
 				  return resp.json();       // (regresa una promesa) will try to parse the result as json as return a promise that you can .then for results
 			  })
 			  .then(data => {
 				  //Aquí es donde debe comenzar tu código después de que finalice la búsqueda
+				  setLista([...lista, {"label": evento.target.value, "done" :false}]);
+				  setInputValue('');
 				  console.log("data", data); //esto imprimirá en la consola el objeto exacto recibido del servidor
 			  })
 			  .catch(error => {
@@ -88,7 +78,7 @@ const Home = () => {
 						<input className="cajaInput" type="text" onChange={asigna} value={inputValue} onKeyDown={sumaToDo}/>
 					</div>
 					<div>
-						<ElementoLista lista={lista} setLista={setLista} />
+						<ElementoLista lista={lista} setLista={setLista} borrado={}/>
 						<hr />
 						<Total total={lista.length} />
 					</div>
