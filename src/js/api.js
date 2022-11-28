@@ -9,77 +9,43 @@ function creaLista(){
 	fetch(servidor, {
 		method: "POST",
 		body: JSON.stringify([]),
-		headers: {
-		  "Content-Type": "application/json"
-		}
+		headers: { "Content-Type": "application/json" }
 	  })
-	  .then(resp => {
-		  return resp;       // (regresa una promesa) will try to parse the result as json as return a promise that you can .then for results
-	  })
-	  .then(data => {
-		  //setLista(data); // Es que no retorna la lista
-	  })
-	  .catch(error => {
-		  console.log("Mi_Error",error);
-	  });
+	  .then(resp => { return resp; })
+	  .then(data => { setLista([]); })
+	  .catch(error => { console.log("Mi_Error",error);  });
 }
 
-function leerLista(){
+export function leerLista(){
 	fetch(servidor)
-	.then((resp) =>
-	 {	
-		if (resp.status == 200)
-			 return resp.json(); 
-	})
+	.then((resp) => {return resp.json();})
 	.then((resp) => {
-		if (!Array.isArray(resp) || (resp.length == 0)){
-			setLista([]);
-		}else{
-			let miArray = [];
-			resp.forEach(element => {
-				miArray.push({"label": element.label, "done" :false});
-			})
-			setLista(miArray);
-		}
+		console.log("mia",resp.status, resp.msg)
+		if (resp.msg == "This use does not exists, first call the POST method first to create the list for this username")
+			creaLista();
+		else
+			setLista(resp);
 	})
+	.catch(error => {setLista([]);	});
 }
 
-
-function modificaLista(miLista){
-
-	fetch(servidor, {
-		method: "PUT",
-		body: JSON.stringify(miLista),
-		headers: {
-		  "Content-Type": "application/json"
-		}
-	  })
-	  .then(resp => {
-		  return resp.json();       // (regresa una promesa) will try to parse the result as json as return a promise that you can .then for results
-	  })
-	  .then(data => {
-		  setLista(miLista); // lo se.... miLista local, setLista global...... pero este lenguaje no invita a muchas cosas, la verdad :-)
-	  })
-	  .catch(error => {
-		  console.log("Mi Error",error);
-	  });
+export function modificaLista(miLista){
+	fetch(servidor, {method: "PUT",
+					 body: JSON.stringify(miLista),
+					 headers: {"Content-Type": "application/json"}
+	 				})
+	.then(resp => { return resp.json(); })
+	.then(data => { setLista(miLista);  })
+	.catch(error => {console.log("Mi Error",error);});
 }
 
 function borraLista(){
-
-	fetch(servidor, {
-		method: "DELETE",
-		headers: {"Content-Type": "application/json"}
-		})
-		.then(resp => {
-			return resp.json();       // (regresa una promesa) will try to parse the result as json as return a promise that you can .then for results
-		})
-		.then(data => {
-			creaLista();	
-			leerLista();
-		})
-		.catch(error => {
-			console.log("Mi Error",error);
-		});
+	fetch(servidor, {method: "DELETE",
+					 headers: {"Content-Type": "application/json"}
+					})
+	.then(resp => {	return resp.json();		})
+	.then(data => {	creaLista(); })
+	.catch(error => {console.log("Mi Error",error);});
 }
-	
+
+export { creaLista, borraLista };
