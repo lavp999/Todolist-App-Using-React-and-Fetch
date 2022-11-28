@@ -1,7 +1,6 @@
 import React, {useState, useEffect } from "react";
 import ElementoLista from "./elementoLista.jsx";
 import Total from "./total.jsx";
-import {leerLista, modificaLista, borraLista}  from "../api.js"
 
 const servidor = 'http://assets.breatheco.de/apis/fake/todos/user/lavp999';
 
