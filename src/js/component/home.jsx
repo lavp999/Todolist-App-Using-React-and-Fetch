@@ -24,7 +24,7 @@ const Home = () => {
 
 /* -------------------------------------------------------------------------------------------------  */
 /* Funciones para el tratamiento de API                                                               */
-/* -------------------------------------------------------------------------------------------------  * /
+/* -------------------------------------------------------------------------------------------------  */
 function creaLista(){
 	fetch(servidor, {
 		method: "POST",
@@ -40,7 +40,6 @@ function leerLista(){
 	fetch(servidor)
 	.then((resp) => {return resp.json();})
 	.then((resp) => {
-		console.log("mia",resp.status, resp.msg)
 		if (resp.msg == "This use does not exists, first call the POST method first to create the list for this username")
 			creaLista();
 		else

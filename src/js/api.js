@@ -12,31 +12,42 @@ function creaLista(){
 		headers: { "Content-Type": "application/json" }
 	  })
 	  .then(resp => { return resp; })
-	  .then(data => { setLista([]); })
+	  .then(data => { return []; })
 	  .catch(error => { console.log("Mi_Error",error);  });
+
+	  return [];
 }
 
 export function leerLista(){
+	let miLista = [];
+
 	fetch(servidor)
 	.then((resp) => {return resp.json();})
 	.then((resp) => {
 		console.log("mia",resp.status, resp.msg)
 		if (resp.msg == "This use does not exists, first call the POST method first to create the list for this username")
-			creaLista();
+			miLista =  creaLista();
 		else
-			setLista(resp);
+			miLista = resp;
 	})
 	.catch(error => {setLista([]);	});
+
+	return miLista;
+
 }
 
 export function modificaLista(miLista){
+	let nuevaLista = miLista;
+	
 	fetch(servidor, {method: "PUT",
 					 body: JSON.stringify(miLista),
 					 headers: {"Content-Type": "application/json"}
 	 				})
 	.then(resp => { return resp.json(); })
-	.then(data => { setLista(miLista);  })
+	.then(data => { nuevaLista = data  })
 	.catch(error => {console.log("Mi Error",error);});
+
+	return nuevaLista;
 }
 
 function borraLista(){
@@ -44,8 +55,10 @@ function borraLista(){
 					 headers: {"Content-Type": "application/json"}
 					})
 	.then(resp => {	return resp.json();		})
-	.then(data => {	creaLista(); })
+	.then(data => {	return creaLista(); })
 	.catch(error => {console.log("Mi Error",error);});
+
+	return [];
 }
 
-export { creaLista, borraLista };
+export { borraLista };
