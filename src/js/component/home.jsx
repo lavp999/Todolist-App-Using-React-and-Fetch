@@ -31,64 +31,40 @@ function creaLista(){
 		headers: { "Content-Type": "application/json" }
 	  })
 	  .then(resp => { return resp; })
-	  .then(data => { console.log("Resultado: ", data); })
+	  .then(data => { setLista([]); })
 	  .catch(error => { console.log("Mi_Error",error);  });
 }
 
 function leerLista(){
 	fetch(servidor)
-	.then((resp) =>
-	 {	
-		if (resp.status == 200)
-			 return resp.json(); 
-	})
+	.then((resp) => {return resp.json();})
 	.then((resp) => {
-		if (!Array.isArray(resp)){
-			setLista([]);
-		}else{
-			let miArray = [];
-			resp.forEach(element => {
-				miArray.push({"label": element.label, "done" :false});
-			})
-			setLista(miArray);
-		}
+		console.log("mia",resp.status, resp.msg)
+		if (resp.msg == "This use does not exists, first call the POST method first to create the list for this username")
+			creaLista();
+		else
+			setLista(resp);
 	})
-	.catch(error => {
-		console.log("leerLista",error);
-		setLista();
-	});
+	.catch(error => {setLista([]);	});
 }
 
-
 function modificaLista(miLista){
-
-	fetch(servidor, {
-		method: "PUT",
-		body: JSON.stringify(miLista),
-		headers: {
-		  "Content-Type": "application/json"
-		}
-	  })
-	  .then(resp => { return resp.json(); })
-	  .then(data => { setLista(miLista);  })
-	  .catch(error => {console.log("Mi Error",error);});
+	fetch(servidor, {method: "PUT",
+					 body: JSON.stringify(miLista),
+					 headers: {"Content-Type": "application/json"}
+	 				})
+	.then(resp => { return resp.json(); })
+	.then(data => { setLista(miLista);  })
+	.catch(error => {console.log("Mi Error",error);});
 }
 
 function borraLista(){
-
-	fetch(servidor, {
-		method: "DELETE",
-		headers: {"Content-Type": "application/json"}
-		})
-		.then(resp => {
-			return resp.json();
-		})
-		.then(data => {
-			console.log("borraLista",data);	
-			//leerLista();
-			setLista([]);
-		})
-		.catch(error => {console.log("Mi Error",error);});
+	fetch(servidor, {method: "DELETE",
+					 headers: {"Content-Type": "application/json"}
+					})
+	.then(resp => {	return resp.json();		})
+	.then(data => {	creaLista(); })
+	.catch(error => {console.log("Mi Error",error);});
 }
 	
 /* -------------------------------------------------------------------------------------------------  */
@@ -97,11 +73,6 @@ function borraLista(){
 
 	useEffect(()=>{
 		leerLista();
-		if (!Array.isArray(lista) && (lsita.length > 0)){
-			console.log("Estar por aquí");
-			creaLista();
-			leerLista();
-		}
 	}, []);
 
 /* -------------------------------------------------------------------------------------------------  */
